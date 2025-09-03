@@ -113,6 +113,20 @@
     animation: caustic-drift 8s ease-in-out infinite;
   }
   
+  .floating-content {
+    cursor: default;
+  }
+  
+  .floating-content button,
+  .floating-content a {
+    cursor: pointer;
+  }
+  
+  .floating-content:hover {
+    transform: translateZ(0) scale(1.005);
+    transition: transform 0.3s ease;
+  }
+  
   
   .floating-content > * {
     position: relative;

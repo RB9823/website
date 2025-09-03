@@ -6,6 +6,6 @@ export const profile = {
     github: "https://github.com/RB9823",
     linkedin: "https://www.linkedin.com/in/rohan-bahl",
     x: "https://x.com/rohanbahl",
-    resume: "/Rohan_Bahl_Resume.pdf"
+    resume: "./Rohan_Bahl_Resume.pdf"
   }
 };

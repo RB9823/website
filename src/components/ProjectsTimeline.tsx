@@ -11,24 +11,28 @@ export function ProjectsTimeline() {
   return (
     <div className="w-full p-4 md:p-6">
       <div className="flex items-center gap-2 mb-4">
-        <button
+        <motion.button
           className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
             tab === 'projects' ? 'bg-brand/20 text-brand' : 'bg-white/5 text-text-muted hover:text-text-primary'
           }`}
           onClick={() => setTab('projects')}
           aria-pressed={tab === 'projects'}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           Featured Projects
-        </button>
-        <button
+        </motion.button>
+        <motion.button
           className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
             tab === 'timeline' ? 'bg-brand/20 text-brand' : 'bg-white/5 text-text-muted hover:text-text-primary'
           }`}
           onClick={() => setTab('timeline')}
           aria-pressed={tab === 'timeline'}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           Career Timeline
-        </button>
+        </motion.button>
       </div>
 
       <div>

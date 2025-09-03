@@ -1,13 +1,14 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { experience } from '../../data/experience';
-import { profile } from '../../data/profile';
 import { Icon } from '../Icon';
 
 interface ExperienceTileProps {
   isExpanded: boolean;
 }
 
-export function ExperienceTile({ isExpanded }: ExperienceTileProps) {
+export function ExperienceTile({ isExpanded: _isExpanded }: ExperienceTileProps) {
+  const [showAll, setShowAll] = useState(false);
   return (
     <div className="flex flex-col min-h-[480px] p-4 md:p-6">
       {/* Header */}
@@ -19,12 +20,13 @@ export function ExperienceTile({ isExpanded }: ExperienceTileProps) {
       {/* Cards grid */}
       <div className="flex-1 overflow-hidden">
         <div className="grid grid-cols-1 gap-4">
-          {experience.map((item, index) => (
+          {experience.slice(0, showAll ? experience.length : 2).map((item, index) => (
             <motion.div
               key={`${item.company}-${item.role}`}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.08 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ scale: 1.01, x: 3 }}
               className="p-1 md:p-2 flex flex-col gap-2"
             >
               <div className="flex items-start justify-between gap-3">
@@ -39,7 +41,7 @@ export function ExperienceTile({ isExpanded }: ExperienceTileProps) {
 
               {item.bullets?.length > 0 && (
                 <ul className="text-sm text-text-muted space-y-1.5 leading-relaxed list-none m-0">
-                  {item.bullets.slice(0, isExpanded ? item.bullets.length : 3).map((b, i) => (
+                  {item.bullets.slice(0, showAll ? item.bullets.length : 2).map((b, i) => (
                     <li key={i} className="flex items-start gap-2">
                       <span className="text-brand mt-1 flex-shrink-0">•</span>
                       <span>{b}</span>
@@ -50,7 +52,7 @@ export function ExperienceTile({ isExpanded }: ExperienceTileProps) {
 
               {item.tech?.length > 0 && (
                 <div className="mt-auto pt-1 flex flex-wrap gap-1.5">
-                  {item.tech.slice(0, isExpanded ? item.tech.length : 6).map((t) => (
+                  {item.tech.slice(0, showAll ? item.tech.length : 4).map((t) => (
                     <span key={t} className="px-2 py-0.5 bg-white/5 text-text-muted text-xs rounded">
                       {t}
                     </span>
@@ -60,20 +62,19 @@ export function ExperienceTile({ isExpanded }: ExperienceTileProps) {
             </motion.div>
           ))}
         </div>
-      </div>
-
-      {/* Footer with View Full Resume link */}
-      <div className="flex-shrink-0 pt-4 border-t border-white/10">
-        <motion.a
-          href={profile.links.resume}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-brand hover:text-brand/80 transition-colors text-sm font-medium"
-          whileHover={{ x: 5 }}
-        >
-          View Full Resume
-          <Icon name="arrowRight" size={14} />
-        </motion.a>
+        
+        {experience.length > 2 && (
+          <div className="mt-4 pt-4 border-t border-white/10">
+            <motion.button
+              onClick={() => setShowAll(!showAll)}
+              className="inline-flex items-center gap-2 text-brand hover:text-brand/80 transition-colors text-sm font-medium"
+              whileHover={{ x: 5 }}
+            >
+              {showAll ? 'Show Less' : 'See All Experiences'}
+              <Icon name={showAll ? "arrowLeft" : "arrowRight"} size={14} />
+            </motion.button>
+          </div>
+        )}
       </div>
     </div>
   );

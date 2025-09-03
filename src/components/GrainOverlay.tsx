@@ -36,7 +36,7 @@ export function GrainOverlay() {
         backgroundRepeat: 'repeat',
         backgroundSize: '128px 128px',
         mixBlendMode: 'overlay',
-        opacity: 0.065,
+        opacity: 0.15,
         filter: 'blur(0.8px)',
       }}
     />

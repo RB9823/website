@@ -80,9 +80,9 @@ export function CursorLight() {
         width: `${VISUAL.HALO_SIZE_PX}px`,
         height: `${VISUAL.HALO_SIZE_PX}px`,
         background: [
-          'radial-gradient(closest-side, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.10) 40%, rgba(255,255,255,0) 70%)',
-          'radial-gradient(closest-side, rgba(118,208,255,0.18) 0%, rgba(118,208,255,0.08) 45%, rgba(118,208,255,0) 80%)',
-          'radial-gradient(closest-side, rgba(118,208,255,0.06) 0%, rgba(118,208,255,0) 90%)'
+          'radial-gradient(closest-side, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.20) 40%, rgba(255,255,255,0) 70%)',
+          'radial-gradient(closest-side, rgba(118,208,255,0.30) 0%, rgba(118,208,255,0.15) 45%, rgba(118,208,255,0) 80%)',
+          'radial-gradient(closest-side, rgba(118,208,255,0.12) 0%, rgba(118,208,255,0) 90%)'
         ].join(','),
         borderRadius: '50%',
         filter: 'blur(1px)',
