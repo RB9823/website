@@ -112,16 +112,16 @@ export function TimelineTile({ isExpanded }: TimelineTileProps) {
       </div>
 
       {/* Timeline (grouped by year in responsive grid) */}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden px-1 md:px-0">
         <div className={`${isExpanded ? 'overflow-y-auto h-full pr-1' : ''}`}>
-          <div className="space-y-6">
+          <div className="space-y-6 pb-4">
             {groups.map(([year, items]) => (
               <div key={year} className="space-y-3">
                 <div className="flex items-center gap-3">
                   <div className="text-sm tracking-wider uppercase text-text-muted">{year}</div>
                   <div className="h-px flex-1 bg-white/10" />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mx-1 md:mx-0">
                   {items.map((event, idx) => (
                     <motion.div
                       key={`${event.type}-${event.title}-${idx}`}

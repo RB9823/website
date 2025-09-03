@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { experience } from '../../data/experience';
 import { Icon } from '../Icon';
 import { MOTION } from '../../utils/motion';
@@ -19,18 +19,28 @@ export function ExperienceTile({ isExpanded: _isExpanded }: ExperienceTileProps)
       </div>
 
       {/* Cards grid */}
-      <div className="flex-1 overflow-hidden">
-        <div className="grid grid-cols-1 gap-4">
-          {experience.slice(0, showAll ? experience.length : 2).map((item, index) => (
+      <div className="flex-1 overflow-visible">
+        <AnimatePresence mode="wait">
+          {!showAll ? (
+            // Compact view - show first 2 experiences
             <motion.div
-              key={`${item.company}-${item.role}`}
-              custom={index}
-              initial="hidden"
-              animate="show"
-              variants={MOTION.listItem}
-              whileHover={MOTION.hoverLift}
-              className="group p-1 md:p-2 flex flex-col gap-2"
+              key="compact"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="space-y-4 py-2"
             >
+              {experience.slice(0, 2).map((item, index) => (
+                <motion.div
+                  key={`${item.company}-${item.role}`}
+                  custom={index}
+                  initial="hidden"
+                  animate="show"
+                  variants={MOTION.listItem}
+                  whileHover={MOTION.cardHover}
+                  className="group p-1 md:p-2 flex flex-col gap-2"
+                >
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h3 className="font-semibold text-text-primary text-sm md:text-base leading-snug">{item.role}</h3>
@@ -62,15 +72,71 @@ export function ExperienceTile({ isExpanded: _isExpanded }: ExperienceTileProps)
                 </div>
               )}
             </motion.div>
-          ))}
-        </div>
+              ))}
+            </motion.div>
+          ) : (
+            // Expanded view - show all experiences
+            <motion.div
+              key="expanded"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="space-y-4 py-2"
+            >
+              {experience.map((item, index) => (
+                <motion.div
+                  key={`${item.company}-${item.role}`}
+                  custom={index}
+                  initial="hidden"
+                  animate="show"
+                  variants={MOTION.listItem}
+                  whileHover={MOTION.cardHover}
+                  className="group p-1 md:p-2 flex flex-col gap-2"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="font-semibold text-text-primary text-sm md:text-base leading-snug">{item.role}</h3>
+                      <p className="text-brand text-xs md:text-sm font-medium">{item.company}</p>
+                    </div>
+                    <div className="text-xs text-text-muted whitespace-nowrap flex items-center gap-1">
+                      <Icon name="calendar" size={14} /> {item.start} – {item.end}
+                    </div>
+                  </div>
+
+                  {item.bullets?.length > 0 && (
+                    <ul className="text-sm text-text-muted space-y-1.5 leading-relaxed list-none m-0">
+                      {item.bullets.map((b, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <span className="text-brand mt-1 flex-shrink-0">•</span>
+                          <span>{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {item.tech?.length > 0 && (
+                    <div className="mt-auto pt-1 flex flex-wrap gap-1.5">
+                      {item.tech.map((t) => (
+                        <span key={t} className="px-2 py-0.5 bg-brand/10 text-brand text-xs rounded transition-transform shadow-[0_1px_6px_rgba(118,208,255,0.25)] group-hover:-translate-y-px">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
         
         {experience.length > 2 && (
           <div className="mt-4 pt-4 border-t border-white/10">
             <motion.button
               onClick={() => setShowAll(!showAll)}
               className="inline-flex items-center gap-2 text-brand hover:text-brand/80 transition-colors text-sm font-medium focus-visible:ring-2 focus-visible:ring-brand outline-none rounded"
-              whileHover={{ x: 5 }}
+              whileHover={{ x: 5, ...MOTION.mobileHover }}
+              whileTap={MOTION.tap}
             >
               {showAll ? 'Show Less' : 'See All Experiences'}
               <Icon name={showAll ? "arrowLeft" : "arrowRight"} size={14} />

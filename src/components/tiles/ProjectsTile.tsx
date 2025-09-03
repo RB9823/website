@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { projects } from '../../data/projects';
 import { MOTION } from '../../utils/motion';
 
@@ -27,28 +27,53 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
       </div>
 
       {/* Project grid */}
-      <div className="flex-1 overflow-hidden">
-        {!isExpanded ? (
-          // Compact view - show featured projects as cards
-          <div className="space-y-3">
-            {featuredProjects.map((project, index) => (
-              <motion.div
-                key={project.title}
-                custom={index}
-                initial="hidden"
-                animate="show"
-                variants={MOTION.listItem}
-                whileHover={MOTION.hoverLift}
-                className="group p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/20 backdrop-brightness-[1.05] transition-colors cursor-pointer"
-                // onClick={() => setSelectedProject(project)}
-              >
+      <div className="flex-1 overflow-visible">
+        <AnimatePresence mode="wait">
+          {!isExpanded ? (
+            // Compact view - show featured projects as cards
+            <motion.div 
+              key="compact"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
+              className="space-y-4 py-2"
+            >
+              {featuredProjects.map((project, index) => (
+                <motion.div
+                  key={project.title}
+                  custom={index}
+                  initial={{ 
+                    opacity: 0, 
+                    x: -20,
+                    backgroundColor: "rgba(255, 255, 255, 0)"
+                  }}
+                  animate={{ 
+                    opacity: 1, 
+                    x: 0,
+                    backgroundColor: "rgba(255, 255, 255, 0.05)"
+                  }}
+                  exit={{ 
+                    opacity: 0, 
+                    x: -20,
+                    backgroundColor: "rgba(255, 255, 255, 0)"
+                  }}
+                  transition={{ 
+                    delay: index * 0.1, 
+                    duration: 0.4, 
+                    ease: "easeOut"
+                  }}
+                  whileHover={MOTION.cardHover}
+                  className="group p-3 rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/20 backdrop-brightness-[1.05] transition-colors"
+                  // onClick={() => setSelectedProject(project)}
+                >
                 <h3 className="font-medium text-text-primary text-sm mb-1">
                   {project.title}
                 </h3>
                 <p className="text-text-muted text-xs leading-relaxed">
                   {project.description}
                 </p>
-                <div className="flex flex-wrap gap-1 mt-2">
+                <div className="flex flex-wrap gap-2 mt-2">
                   {project.tech.slice(0, 3).map((tech) => (
                     <span 
                       key={tech} 
@@ -65,21 +90,45 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
                 </div>
               </motion.div>
             ))}
-          </div>
-        ) : (
-          // Expanded view - show all projects in grid
-          <div className="h-full overflow-y-auto">
-            <div className="grid grid-cols-1 gap-4 pb-4">
-              {displayProjects.map((project, index) => (
-                <motion.div
-                  key={project.title}
-                  custom={index}
-                  initial="hidden"
-                  animate="show"
-                  variants={MOTION.listItem}
-                  className="p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/20 backdrop-brightness-[1.05] transition-all duration-200 cursor-pointer group"
-                  whileHover={MOTION.hoverLift}
-                >
+            </motion.div>
+          ) : (
+            // Expanded view - show all projects in grid
+            <motion.div
+              key="expanded"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
+              className="h-full overflow-y-auto overflow-x-visible"
+            >
+              <div className="grid grid-cols-1 gap-4 pb-4 px-1">
+                {displayProjects.map((project, index) => (
+                  <motion.div
+                    key={project.title}
+                    custom={index}
+                    initial={{ 
+                      opacity: 0, 
+                      x: -20,
+                      backgroundColor: "rgba(255, 255, 255, 0)"
+                    }}
+                    animate={{ 
+                      opacity: 1, 
+                      x: 0,
+                      backgroundColor: "rgba(255, 255, 255, 0.05)"
+                    }}
+                    exit={{ 
+                      opacity: 0, 
+                      x: -20,
+                      backgroundColor: "rgba(255, 255, 255, 0)"
+                    }}
+                    transition={{ 
+                      delay: index * 0.1, 
+                      duration: 0.4, 
+                      ease: "easeOut"
+                    }}
+                    className="p-4 rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/20 backdrop-brightness-[1.05] transition-all duration-200 group"
+                    whileHover={MOTION.cardHover}
+                  >
                   <div className="flex justify-between items-start mb-3">
                     <h3 className="font-semibold text-text-primary group-hover:text-brand transition-colors">
                       {project.title}
@@ -95,7 +144,7 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
                     {project.description}
                   </p>
                   
-                  <div className="flex flex-wrap gap-1 mb-3">
+                  <div className="flex flex-wrap gap-2 mb-3">
                     {project.tech.map((tech) => (
                       <span 
                         key={tech} 
@@ -121,9 +170,10 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
                   </div>
                 </motion.div>
               ))}
-            </div>
-          </div>
-        )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* No click hint; static tiles */}

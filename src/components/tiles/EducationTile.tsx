@@ -30,7 +30,7 @@ export function EducationTile({ isExpanded: _isExpanded }: EducationTileProps) {
               initial="hidden"
               animate="show"
               variants={MOTION.listItem}
-              whileHover={MOTION.hoverLift}
+              whileHover={MOTION.cardHover}
               className="space-y-2"
             >
               {/* School and degree */}

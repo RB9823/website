@@ -125,7 +125,7 @@ export function HeroTile({ isExpanded }: HeroTileProps) {
               <motion.button
                 onClick={method.action || (() => window.open(method.href, '_blank'))}
                 className="touch-ripple w-full flex items-center gap-3 p-3 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 hover:border-white/20 backdrop-brightness-[1.05] transition-all duration-200 text-left focus-visible:ring-2 focus-visible:ring-brand outline-none"
-                whileHover={MOTION.hoverLift}
+                whileHover={MOTION.mobileHover}
                 whileTap={MOTION.tap}
               >
                 <span className="text-brand">
@@ -146,76 +146,80 @@ export function HeroTile({ isExpanded }: HeroTileProps) {
                   {method.copyable ? <Icon name="clipboard" size={14} /> : <Icon name="arrowRight" size={14} />}
                 </motion.span>
               </motion.button>
+              
+              {method.name === 'Quick Message' && showQuickContact && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0, y: -10 }}
+                  animate={{ opacity: 1, height: 'auto', y: 0 }}
+                  exit={{ opacity: 0, height: 0, y: -10 }}
+                  transition={{ 
+                    duration: 0.4, 
+                    ease: [0.4, 0.0, 0.2, 1],
+                    height: { duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }
+                  }}
+                  className="mt-3 p-4 bg-white/5 rounded-lg border border-white/10"
+                >
+                  <form onSubmit={handleQuickContactSubmit} className="space-y-3">
+                    <input
+                      name="name"
+                      type="text"
+                      placeholder="Your name"
+                      required
+                      className="w-full px-3 py-2 bg-surface border border-stroke rounded text-text-primary placeholder-text-muted text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
+                    />
+                    <input
+                      name="email"
+                      type="email"
+                      placeholder="Your email"
+                      required
+                      className="w-full px-3 py-2 bg-surface border border-stroke rounded text-text-primary placeholder-text-muted text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
+                    />
+                    <textarea
+                      name="message"
+                      placeholder="Your message..."
+                      rows={3}
+                      required
+                      className="w-full px-3 py-2 bg-surface border border-stroke rounded text-text-primary placeholder-text-muted text-sm focus:ring-2 focus:ring-brand focus:border-transparent resize-none"
+                    />
+                    
+                    <div className="flex items-center gap-2">
+                      <motion.button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="btn-primary text-sm py-2 px-4 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-brand outline-none"
+                        whileHover={!isSubmitting ? MOTION.buttonHover : {}}
+                        whileTap={!isSubmitting ? MOTION.tap : {}}
+                      >
+                        {isSubmitting ? 'Sending...' : 'Send Message'}
+                      </motion.button>
+                      
+                      <motion.button
+                        type="button"
+                        onClick={() => setShowQuickContact(false)}
+                        className="text-text-muted hover:text-text-primary text-sm focus-visible:ring-2 focus-visible:ring-brand outline-none rounded"
+                        whileHover={MOTION.mobileHover}
+                        whileTap={MOTION.tap}
+                      >
+                        Cancel
+                      </motion.button>
+                    </div>
+
+                    {submitStatus === 'success' && (
+                      <div className="text-green-500 text-sm">
+                        ✓ Message sent successfully!
+                      </div>
+                    )}
+                    
+                    {submitStatus === 'error' && (
+                      <div className="text-red-500 text-sm">
+                        ✗ Failed to send message. Please try email instead.
+                      </div>
+                    )}
+                  </form>
+                </motion.div>
+              )}
             </motion.div>
           ))}
-          
-          {showQuickContact && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="mt-4 p-4 bg-white/5 rounded-lg border border-white/10"
-            >
-              <form onSubmit={handleQuickContactSubmit} className="space-y-3">
-                <input
-                  name="name"
-                  type="text"
-                  placeholder="Your name"
-                  required
-                  className="w-full px-3 py-2 bg-surface border border-stroke rounded text-text-primary placeholder-text-muted text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
-                />
-                <input
-                  name="email"
-                  type="email"
-                  placeholder="Your email"
-                  required
-                  className="w-full px-3 py-2 bg-surface border border-stroke rounded text-text-primary placeholder-text-muted text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
-                />
-                <textarea
-                  name="message"
-                  placeholder="Your message..."
-                  rows={3}
-                  required
-                  className="w-full px-3 py-2 bg-surface border border-stroke rounded text-text-primary placeholder-text-muted text-sm focus:ring-2 focus:ring-brand focus:border-transparent resize-none"
-                />
-                
-                <div className="flex items-center gap-2">
-                  <motion.button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="btn-primary text-sm py-2 px-4 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-brand outline-none"
-                    whileHover={!isSubmitting ? MOTION.hoverLift : {}}
-                    whileTap={!isSubmitting ? MOTION.tap : {}}
-                  >
-                    {isSubmitting ? 'Sending...' : 'Send Message'}
-                  </motion.button>
-                  
-                  <motion.button
-                    type="button"
-                    onClick={() => setShowQuickContact(false)}
-                    className="text-text-muted hover:text-text-primary text-sm focus-visible:ring-2 focus-visible:ring-brand outline-none rounded"
-                    whileHover={MOTION.hoverLift}
-                    whileTap={MOTION.tap}
-                  >
-                    Cancel
-                  </motion.button>
-                </div>
-
-                {submitStatus === 'success' && (
-                  <div className="text-green-500 text-sm">
-                    ✓ Message sent successfully!
-                  </div>
-                )}
-                
-                {submitStatus === 'error' && (
-                  <div className="text-red-500 text-sm">
-                    ✗ Failed to send message. Please try email instead.
-                  </div>
-                )}
-              </form>
-            </motion.div>
-          )}
           
           <div className="flex items-center gap-2 text-sm mt-4 pt-2 border-t border-white/10">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
@@ -230,8 +234,8 @@ export function HeroTile({ isExpanded }: HeroTileProps) {
             href={profile.links.resume}
             download="Rohan_Bahl_Resume.pdf"
             className="btn-primary text-sm px-6 py-3 inline-flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-brand outline-none"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={MOTION.buttonHover}
+            whileTap={MOTION.tap}
           >
             <Icon name="arrowRight" size={16} />
             Download Resume

@@ -99,9 +99,9 @@
     z-index: 0;
     animation: caustic-drift 12s ease-in-out infinite;
     opacity: calc(
-      0.3
-      + (var(--caustic-boost, 0) * 0.2)
-      + (var(--tile-spill, 0) * var(--cursor-boost, 0) * 0.15)
+      0.2
+      + (var(--caustic-boost, 0) * 0.15)
+      + (var(--tile-spill, 0) * var(--cursor-boost, 0) * 0.1)
     );
     transform: translate(
       calc(var(--caustic-off-x, 0px) + (var(--tile-spill, 0) * 2px)),
@@ -119,9 +119,9 @@
   
   .floating-content:hover::before {
     opacity: calc(
-      0.4
-      + (var(--caustic-boost, 0) * 0.3)
-      + (var(--tile-spill, 0) * var(--cursor-boost, 0) * 0.2)
+      0.25
+      + (var(--caustic-boost, 0) * 0.2)
+      + (var(--tile-spill, 0) * var(--cursor-boost, 0) * 0.15)
     );
     animation: caustic-drift 8s ease-in-out infinite;
   }
@@ -136,7 +136,7 @@
   }
   
   .floating-content:hover {
-    transform: translateZ(0) scale(1.005);
+    transform: translateZ(0) scale(1.002);
     transition: transform 0.3s ease;
   }
   
@@ -173,7 +173,7 @@
   }
   
   .floating-content::before {
-    opacity: 0.15;
+    opacity: 0.1;
     top: -10%;
     left: -10%;
     width: 120%;
