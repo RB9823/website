@@ -5,6 +5,9 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Enable high refresh rate on mobile */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
   }
   
   body {
@@ -12,6 +15,11 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
+    /* Mobile performance optimizations */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
   }
 
   * {
@@ -64,6 +72,11 @@
     width: 100%;
     overflow: hidden;
     box-sizing: border-box;
+    /* High refresh rate optimizations */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
   }
 
   .floating-content .tile-content {
@@ -282,5 +295,28 @@
   main {
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
+  }
+}
+
+/* High refresh rate mobile optimizations */
+@media (max-width: 768px) and (min-resolution: 2dppx) {
+  * {
+    /* Enable 120Hz/144Hz on supported mobile devices */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  .floating-content,
+  [data-framer-motion] {
+    /* Optimize for high refresh rate displays */
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    will-change: transform, opacity, filter;
+  }
+  
+  /* Ensure canvas animations use requestAnimationFrame */
+  canvas {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
   }
 }
