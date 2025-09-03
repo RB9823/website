@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { projects } from '../../data/projects';
+import { MOTION } from '../../utils/motion';
 
 interface ProjectsTileProps {
   isExpanded: boolean;
@@ -33,10 +34,12 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
             {featuredProjects.map((project, index) => (
               <motion.div
                 key={project.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors cursor-pointer"
+                custom={index}
+                initial="hidden"
+                animate="show"
+                variants={MOTION.listItem}
+                whileHover={MOTION.hoverLift}
+                className="group p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/20 backdrop-brightness-[1.05] transition-colors cursor-pointer"
                 // onClick={() => setSelectedProject(project)}
               >
                 <h3 className="font-medium text-text-primary text-sm mb-1">
@@ -49,7 +52,7 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
                   {project.tech.slice(0, 3).map((tech) => (
                     <span 
                       key={tech} 
-                      className="px-2 py-0.5 bg-brand/10 text-brand text-xs rounded"
+                      className="px-2 py-0.5 bg-brand/10 text-brand text-xs rounded transition-transform shadow-[0_1px_6px_rgba(118,208,255,0.25)] group-hover:-translate-y-px"
                     >
                       {tech}
                     </span>
@@ -70,11 +73,12 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
               {displayProjects.map((project, index) => (
                 <motion.div
                   key={project.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-200 cursor-pointer group"
-                  whileHover={{ scale: 1.02 }}
+                  custom={index}
+                  initial="hidden"
+                  animate="show"
+                  variants={MOTION.listItem}
+                  className="p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/20 backdrop-brightness-[1.05] transition-all duration-200 cursor-pointer group"
+                  whileHover={MOTION.hoverLift}
                 >
                   <div className="flex justify-between items-start mb-3">
                     <h3 className="font-semibold text-text-primary group-hover:text-brand transition-colors">
@@ -87,7 +91,7 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
                     )}
                   </div>
                   
-                  <p className="text-text-muted text-sm leading-relaxed mb-3">
+                  <p className="text-text-muted text-sm leading-[1.75] mb-3">
                     {project.description}
                   </p>
                   
@@ -95,7 +99,7 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
                     {project.tech.map((tech) => (
                       <span 
                         key={tech} 
-                        className="px-2 py-1 bg-surface-alt text-text-muted text-xs rounded"
+                        className="px-2 py-1 bg-brand/10 text-brand text-xs rounded transition-transform shadow-[0_1px_6px_rgba(118,208,255,0.25)] group-hover:-translate-y-px"
                       >
                         {tech}
                       </span>
@@ -106,7 +110,7 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
                     {project.href && (
                       <a 
                         href={project.href}
-                        className="text-brand hover:text-brand/80 transition-colors"
+                        className="text-brand hover:text-brand/80 transition-colors focus-visible:ring-2 focus-visible:ring-brand outline-none rounded"
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}

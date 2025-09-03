@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { MOTION } from '../../utils/motion';
 import { education } from '../../data/education';
 import { Icon } from '../Icon';
 
@@ -25,10 +26,11 @@ export function EducationTile({ isExpanded: _isExpanded }: EducationTileProps) {
           {education.map((item, index) => (
             <motion.div
               key={item.school}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ scale: 1.01, x: 3 }}
+              custom={index}
+              initial="hidden"
+              animate="show"
+              variants={MOTION.listItem}
+              whileHover={MOTION.hoverLift}
               className="space-y-2"
             >
               {/* School and degree */}

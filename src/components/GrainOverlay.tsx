@@ -31,15 +31,13 @@ export function GrainOverlay() {
     <div
       ref={ref}
       aria-hidden
-      className="fixed inset-0 pointer-events-none z-[1]"
+      className="fixed inset-0 pointer-events-none z-[1] opacity-[0.15] sm:opacity-[0.12]"
       style={{
         backgroundRepeat: 'repeat',
         backgroundSize: '128px 128px',
         mixBlendMode: 'overlay',
-        opacity: 0.15,
         filter: 'blur(0.8px)',
       }}
     />
   );
 }
-

@@ -13,6 +13,13 @@ export function CursorLight() {
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    // Respect reduced motion and non-hover devices (touch)
+    if (prefersReducedMotion || !supportsHover) {
+      setIsVisible(false);
+      return;
+    }
 
     const onPointerMove = (e: PointerEvent) => {
       targetRef.current.x = e.clientX;

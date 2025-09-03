@@ -115,7 +115,7 @@ export default function App() {
                   <div className="flex items-center gap-6">
                     <a 
                       href={profile.links.github}
-                      className="text-text-muted hover:text-text-primary transition-colors duration-200"
+                      className="text-text-muted hover:text-text-primary transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-brand outline-none rounded"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -123,20 +123,13 @@ export default function App() {
                     </a>
                     <a 
                       href={profile.links.linkedin}
-                      className="text-text-muted hover:text-text-primary transition-colors duration-200"
+                      className="text-text-muted hover:text-text-primary transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-brand outline-none rounded"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       LinkedIn
                     </a>
-                    <a 
-                      href={profile.links.x}
-                      className="text-text-muted hover:text-text-primary transition-colors duration-200"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      X
-                    </a>
+                    {/* Removed X link per request */}
                   </div>
                 </div>
               </footer>
