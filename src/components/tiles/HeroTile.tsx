@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { profile } from '../../data/profile';
 import { Icon } from '../Icon';
@@ -124,7 +124,7 @@ export function HeroTile({ isExpanded }: HeroTileProps) {
             >
               <motion.button
                 onClick={method.action || (() => window.open(method.href, '_blank'))}
-                className="touch-ripple w-full flex items-center gap-3 p-3 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 hover:border-white/20 backdrop-brightness-[1.05] transition-all duration-200 text-left focus-visible:ring-2 focus-visible:ring-brand outline-none"
+                className="w-full flex items-center gap-3 p-3 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 hover:border-white/20 backdrop-brightness-[1.05] transition-all duration-200 text-left focus-visible:ring-2 focus-visible:ring-brand outline-none"
                 whileHover={MOTION.mobileHover}
                 whileTap={MOTION.tap}
               >
@@ -147,49 +147,60 @@ export function HeroTile({ isExpanded }: HeroTileProps) {
                 </motion.span>
               </motion.button>
               
-              {method.name === 'Quick Message' && showQuickContact && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0, y: -10 }}
-                  animate={{ opacity: 1, height: 'auto', y: 0 }}
-                  exit={{ opacity: 0, height: 0, y: -10 }}
-                  transition={{ 
-                    duration: 0.4, 
-                    ease: [0.4, 0.0, 0.2, 1],
-                    height: { duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }
-                  }}
-                  className="mt-3 p-4 bg-white/5 rounded-lg border border-white/10"
-                >
+              <AnimatePresence>
+                {method.name === 'Quick Message' && showQuickContact && (
+                  <motion.div
+                    layout
+                    variants={MOTION.formSlideIn}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    className="mt-3 p-4 bg-white/5 rounded-lg border border-white/10 will-change-transform"
+                  >
                   <form onSubmit={handleQuickContactSubmit} className="space-y-3">
-                    <input
+                    <motion.input
                       name="name"
                       type="text"
                       placeholder="Your name"
                       required
-                      className="w-full px-3 py-2 bg-surface border border-stroke rounded text-text-primary placeholder-text-muted text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
+                      className="w-full px-3 py-2 bg-surface border border-stroke rounded text-text-primary placeholder-text-muted text-sm focus:ring-2 focus:ring-brand focus:border-transparent transition-all duration-200"
+                      whileFocus={MOTION.formField.focus}
+                      initial={MOTION.formField.blur}
                     />
-                    <input
+                    <motion.input
                       name="email"
                       type="email"
                       placeholder="Your email"
                       required
-                      className="w-full px-3 py-2 bg-surface border border-stroke rounded text-text-primary placeholder-text-muted text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
+                      className="w-full px-3 py-2 bg-surface border border-stroke rounded text-text-primary placeholder-text-muted text-sm focus:ring-2 focus:ring-brand focus:border-transparent transition-all duration-200"
+                      whileFocus={MOTION.formField.focus}
+                      initial={MOTION.formField.blur}
                     />
-                    <textarea
+                    <motion.textarea
                       name="message"
                       placeholder="Your message..."
                       rows={3}
                       required
-                      className="w-full px-3 py-2 bg-surface border border-stroke rounded text-text-primary placeholder-text-muted text-sm focus:ring-2 focus:ring-brand focus:border-transparent resize-none"
+                      className="w-full px-3 py-2 bg-surface border border-stroke rounded text-text-primary placeholder-text-muted text-sm focus:ring-2 focus:ring-brand focus:border-transparent resize-none transition-all duration-200"
+                      whileFocus={MOTION.formField.focus}
+                      initial={MOTION.formField.blur}
                     />
                     
                     <div className="flex items-center gap-2">
                       <motion.button
                         type="submit"
                         disabled={isSubmitting}
-                        className="btn-primary text-sm py-2 px-4 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-brand outline-none"
+                        className="btn-primary text-sm py-2 px-4 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-brand outline-none flex items-center gap-2"
                         whileHover={!isSubmitting ? MOTION.buttonHover : {}}
                         whileTap={!isSubmitting ? MOTION.tap : {}}
                       >
+                        {isSubmitting && (
+                          <motion.div
+                            className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full"
+                            variants={MOTION.loadingSpinner}
+                            animate="animate"
+                          />
+                        )}
                         {isSubmitting ? 'Sending...' : 'Send Message'}
                       </motion.button>
                       
@@ -204,20 +215,49 @@ export function HeroTile({ isExpanded }: HeroTileProps) {
                       </motion.button>
                     </div>
 
-                    {submitStatus === 'success' && (
-                      <div className="text-green-500 text-sm">
-                        ✓ Message sent successfully!
-                      </div>
-                    )}
-                    
-                    {submitStatus === 'error' && (
-                      <div className="text-red-500 text-sm">
-                        ✗ Failed to send message. Please try email instead.
-                      </div>
-                    )}
+                    <AnimatePresence>
+                      {submitStatus === 'success' && (
+                        <motion.div
+                          className="text-green-500 text-sm flex items-center gap-2"
+                          variants={MOTION.statusMessage}
+                          initial="initial"
+                          animate="animate"
+                          exit="exit"
+                        >
+                          <motion.span
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
+                          >
+                            ✓
+                          </motion.span>
+                          Message sent successfully!
+                        </motion.div>
+                      )}
+                      
+                      {submitStatus === 'error' && (
+                        <motion.div
+                          className="text-red-500 text-sm flex items-center gap-2"
+                          variants={MOTION.statusMessage}
+                          initial="initial"
+                          animate="animate"
+                          exit="exit"
+                        >
+                          <motion.span
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
+                          >
+                            ✗
+                          </motion.span>
+                          Failed to send message. Please try email instead.
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </form>
-                </motion.div>
-              )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           ))}
           
