@@ -10,12 +10,12 @@ export type Project = {
 
 export const projects: Project[] = [
 {
-    title: "GUI Murphy (TikTok TechJam 2025)",
+    title: "GUI Murphy (TikTok Techjam 2025)",
     href: "https://github.com/RB9823/techjam-2025-final",
     imgSrc: "/images/placeholder.svg",
-    description: "Developed a multi-stage UI inconsistency detection and validation model with a user-friendly GUI",
-    impact: "Finalist — Top 4% (12 / 300 projects)",
-    tech: ["Python", "OmniParser", "CLIP", "MLLMs"],
+    description: "An automated UI inconsistencies detection / validation model w/ a user-friendly GUI",
+    impact: "Made me go insane, with sleep ramifications for the ensuing week",
+    tech: ["Python", "OpenParser"],
     featured: true
   },
   {
