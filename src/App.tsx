@@ -1,5 +1,3 @@
-import { CursorLight } from './components/CursorLight';
-import { GrainOverlay } from './components/GrainOverlay';
 import { HeroTile } from './components/tiles/HeroTile';
 import { EducationTile } from './components/tiles/EducationTile';
 import { ExperienceTile } from './components/tiles/ExperienceTile';
@@ -70,8 +68,6 @@ export default function App() {
       {ready && (
         <>
             <PlaneNoiseBackground />
-          <GrainOverlay />
-          <CursorLight />
 
 
           <div className="relative z-10">

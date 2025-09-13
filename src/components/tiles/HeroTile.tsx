@@ -272,7 +272,7 @@ export function HeroTile({ isExpanded }: HeroTileProps) {
         <div className="flex flex-col gap-3">
           <motion.a 
             href={profile.links.resume}
-            download="Rohan_Bahl_Resume.pdf"
+            download="rohan_bahl_resume.pdf"
             className="btn-primary text-sm px-6 py-3 inline-flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-brand outline-none"
             whileHover={MOTION.buttonHover}
             whileTap={MOTION.tap}
