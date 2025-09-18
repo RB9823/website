@@ -40,9 +40,11 @@ export const MOTION = {
     }
   },
   cardHover: {
-    scale: 1.003,
+    y: -4,
+    scale: 1.01,
+    boxShadow: '0 12px 30px rgba(118, 208, 255, 0.15)',
     transition: { 
-      duration: 0.18, 
+      duration: 0.22, 
       ease: [0.4, 0.0, 0.2, 1] as const
     }
   },
@@ -130,4 +132,3 @@ export const MOTION = {
     }
   }
 };
-

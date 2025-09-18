@@ -39,13 +39,10 @@ export function ProjectsTimeline() {
       <AnimatePresence mode="wait">
         <motion.div
           key={tab}
-          initial={{ opacity: 0, y: 10 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          transition={{ 
-            duration: 0.3,
-            ease: [0.4, 0.0, 0.2, 1]
-          }}
+          transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
         >
         {tab === 'projects' ? (
           <div>
@@ -54,11 +51,18 @@ export function ProjectsTimeline() {
               <motion.button
                 onClick={() => setShowAllProjects(!showAllProjects)}
                 className="inline-flex items-center gap-2 text-brand hover:text-brand/80 transition-colors text-sm font-medium focus-visible:ring-2 focus-visible:ring-brand outline-none rounded"
-                whileHover={{ x: 5, ...MOTION.mobileHover }}
+                whileHover={{ y: 2, ...MOTION.mobileHover }}
                 whileTap={MOTION.tap}
+                aria-expanded={showAllProjects}
               >
                 {showAllProjects ? 'Show Featured Only' : 'See All Projects'}
-                <Icon name={showAllProjects ? "arrowLeft" : "arrowRight"} size={14} />
+                <motion.span
+                  animate={{ rotate: showAllProjects ? 180 : 0 }}
+                  transition={{ duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
+                  className="inline-flex"
+                >
+                  <Icon name={"arrowDown"} size={14} />
+                </motion.span>
               </motion.button>
             </div>
           </div>

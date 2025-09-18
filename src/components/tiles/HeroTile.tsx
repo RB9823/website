@@ -117,7 +117,7 @@ export function HeroTile({ isExpanded }: HeroTileProps) {
             <motion.div
               key={method.name}
               custom={index}
-              initial="hidden"
+              initial={false}
               animate="show"
               variants={MOTION.listItem}
               className="group"
@@ -140,10 +140,29 @@ export function HeroTile({ isExpanded }: HeroTileProps) {
                   </div>
                 </div>
                 <motion.span 
-                  className="text-brand text-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                  className={`relative text-sm opacity-0 group-hover:opacity-100 transition-opacity ${
+                    method.copyable && method.name === 'Email' && copied ? 'text-emerald-400' : 'text-brand'
+                  }`}
                   whileHover={{ x: 5 }}
                 >
-                  {method.copyable ? <Icon name="clipboard" size={14} /> : <Icon name="arrowRight" size={14} />}
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.span
+                      key={method.copyable && method.name === 'Email' && copied ? 'copied' : 'default'}
+                      initial={{ opacity: 0, scale: 0.8, y: 4 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.8, y: -4 }}
+                      transition={{ duration: 0.18, ease: [0.4, 0.0, 0.2, 1] }}
+                      className="inline-flex"
+                    >
+                      {method.copyable && method.name === 'Email' && copied ? (
+                        <Icon name="check" size={14} className="text-emerald-400" />
+                      ) : method.copyable ? (
+                        <Icon name="clipboard" size={14} />
+                      ) : (
+                        <Icon name="arrowRight" size={14} />
+                      )}
+                    </motion.span>
+                  </AnimatePresence>
                 </motion.span>
               </motion.button>
               
@@ -277,8 +296,8 @@ export function HeroTile({ isExpanded }: HeroTileProps) {
             whileHover={MOTION.buttonHover}
             whileTap={MOTION.tap}
           >
-            <Icon name="arrowRight" size={16} />
             Download Resume
+            <Icon name="arrowRight" size={16} />
           </motion.a>
         </div>
       </div>

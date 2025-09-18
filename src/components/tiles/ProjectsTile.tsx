@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { projects } from '../../data/projects';
 import { MOTION } from '../../utils/motion';
+import { Icon } from '../Icon';
 
 interface ProjectsTileProps {
   isExpanded: boolean;
@@ -33,7 +34,7 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
             // Compact view - show featured projects as cards
             <motion.div 
               key="compact"
-              initial={{ opacity: 0, y: 10 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
@@ -43,11 +44,7 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
                 <motion.div
                   key={project.title}
                   custom={index}
-                  initial={{ 
-                    opacity: 0, 
-                    x: -20,
-                    backgroundColor: "rgba(255, 255, 255, 0)"
-                  }}
+                  initial={false}
                   animate={{ 
                     opacity: 1, 
                     x: 0,
@@ -64,30 +61,45 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
                     ease: "easeOut"
                   }}
                   whileHover={MOTION.cardHover}
-                  className="group p-3 rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/20 backdrop-brightness-[1.05] transition-colors"
+                  className="group relative p-3 rounded-lg border border-transparent hover:border-white/15 hover:bg-white/5 backdrop-brightness-[1.05] transition-colors duration-200"
                   // onClick={() => setSelectedProject(project)}
                 >
-                <h3 className="font-medium text-text-primary text-sm mb-1">
-                  {project.title}
-                </h3>
-                <p className="text-text-muted text-xs leading-relaxed">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {project.tech.slice(0, 3).map((tech) => (
-                    <span 
-                      key={tech} 
-                      className="px-2 py-0.5 bg-brand/10 text-brand text-xs rounded transition-transform shadow-[0_1px_6px_rgba(118,208,255,0.25)] group-hover:-translate-y-px"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                  {project.tech.length > 3 && (
-                    <span className="text-text-muted text-xs">
-                      +{project.tech.length - 3} more
-                    </span>
-                  )}
+                <div className="pr-8">
+                  <h3 className="font-medium text-text-primary text-sm mb-1">
+                    {project.title}
+                  </h3>
+                  <p className="text-text-muted text-xs leading-relaxed">
+                    {project.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {project.tech.slice(0, 3).map((tech) => (
+                      <span 
+                        key={tech} 
+                        className="px-2 py-0.5 bg-brand/10 text-brand text-xs rounded transition-transform shadow-[0_1px_6px_rgba(118,208,255,0.25)] group-hover:-translate-y-px"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                    {project.tech.length > 3 && (
+                      <span className="text-text-muted text-xs">
+                        +{project.tech.length - 3} more
+                      </span>
+                    )}
+                  </div>
                 </div>
+                {project.href && (
+                  <motion.a
+                    href={project.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Visit ${project.title}`}
+                    className="absolute top-1/2 right-3 -translate-y-1/2 flex items-center justify-center rounded text-brand opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-1 group-hover:translate-x-0 hover:text-brand/80 focus-visible:ring-2 focus-visible:ring-brand outline-none"
+                    whileHover={{ x: 2 }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Icon name="arrowRight" size={16} />
+                  </motion.a>
+                )}
               </motion.div>
             ))}
             </motion.div>
@@ -95,7 +107,7 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
             // Expanded view - show all projects in grid
             <motion.div
               key="expanded"
-              initial={{ opacity: 0, y: 10 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
@@ -106,11 +118,7 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
                   <motion.div
                     key={project.title}
                     custom={index}
-                    initial={{ 
-                      opacity: 0, 
-                      x: -20,
-                      backgroundColor: "rgba(255, 255, 255, 0)"
-                    }}
+                    initial={false}
                     animate={{ 
                       opacity: 1, 
                       x: 0,
@@ -126,7 +134,7 @@ export function ProjectsTile({ isExpanded }: ProjectsTileProps) {
                       duration: 0.4, 
                       ease: "easeOut"
                     }}
-                    className="p-4 rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/20 backdrop-brightness-[1.05] transition-all duration-200 group"
+                    className="group relative rounded-lg border border-transparent bg-white/0 p-4 transition-all duration-200 hover:border-white/15 hover:bg-white/5 backdrop-brightness-[1.05]"
                     whileHover={MOTION.cardHover}
                   >
                   <div className="flex justify-between items-start mb-3">

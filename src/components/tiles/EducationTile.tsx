@@ -21,17 +21,17 @@ export function EducationTile({ isExpanded: _isExpanded }: EducationTileProps) {
       </div>
 
       {/* Education items */}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-visible">
         <div className="space-y-4">
           {education.map((item, index) => (
             <motion.div
               key={item.school}
               custom={index}
-              initial="hidden"
+              initial={false}
               animate="show"
               variants={MOTION.listItem}
               whileHover={MOTION.cardHover}
-              className="space-y-2"
+              className="group relative space-y-2 rounded-lg border border-transparent bg-white/0 p-3 transition-colors duration-200 hover:border-white/15 hover:bg-white/5 backdrop-brightness-[1.05]"
             >
               {/* School and degree */}
               <div>
@@ -46,8 +46,8 @@ export function EducationTile({ isExpanded: _isExpanded }: EducationTileProps) {
 
               {/* Duration and location */}
               <div className="flex flex-wrap gap-3 text-xs text-text-muted">
-                <span className="flex items-center gap-1">
-                  <Icon name="calendar" size={14} /> {item.start} - {item.end}
+                <span className="flex items-center gap-1 leading-none">
+                  <Icon name="calendar" size={12} /> {item.start} - {item.end}
                 </span>
               </div>
 
@@ -67,7 +67,7 @@ export function EducationTile({ isExpanded: _isExpanded }: EducationTileProps) {
 
               {/* Separator */}
               {index < education.length - 1 && (
-                <div className="border-b border-stroke/50 pb-2" />
+                <div className="border-b border-stroke/30 pt-2" />
               )}
             </motion.div>
           ))}

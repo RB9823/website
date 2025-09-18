@@ -56,7 +56,8 @@ function createTimeline(): TimelineEvent[] {
     events.push({
       type: 'achievement',
       title: highlight.title,
-      subtitle: highlight.note || 'Achievement',
+      // Avoid redundant subtitle for achievements; badge already indicates type
+      subtitle: '',
       date: highlight.date,
       description: highlight.note || '',
       icon: 'trophy',
@@ -125,7 +126,7 @@ export function TimelineTile({ isExpanded }: TimelineTileProps) {
                   {items.map((event, idx) => (
                     <motion.div
                       key={`${event.type}-${event.title}-${idx}`}
-                      initial={{ opacity: 0, y: 8 }}
+                      initial={false}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.25 }}
                       className="rounded-xl border border-white/10 bg-white/5 p-4"
@@ -137,28 +138,33 @@ export function TimelineTile({ isExpanded }: TimelineTileProps) {
                           }`}>
                             <Icon name={event.icon} size={12} />
                           </span>
-                          <span className="text-text-muted flex items-center gap-1">
-                            <Icon name="calendar" size={14} /> {event.date}{event.endDate && ` - ${event.endDate}`}
+                          <span className="text-text-muted flex items-center gap-1 leading-none">
+                            <Icon name="calendar" size={12} /> {event.date}{event.endDate && ` - ${event.endDate}`}
                           </span>
                         </div>
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                          event.type === 'experience' ? 'bg-brand/10 text-brand' :
-                          event.type === 'education' ? 'bg-purple-500/10 text-purple-400' :
-                          'bg-yellow-500/10 text-yellow-400'
-                        }`}>
-                          {event.type.charAt(0).toUpperCase() + event.type.slice(1)}
+                        <span className="inline-flex items-center" aria-hidden={true}>
+                          <span className={
+                            `w-2 h-2 rounded-full ${
+                              event.type === 'experience' ? 'bg-brand' :
+                              event.type === 'education' ? 'bg-purple-400' :
+                              'bg-yellow-400'
+                            }`
+                          } />
+                          <span className="sr-only">{event.type} event</span>
                         </span>
                       </div>
                       <div className="mt-2 space-y-1">
-                        <div className="font-semibold text-text-primary text-sm leading-snug">{event.title}</div>
-                        <div className="text-brand text-xs">{event.subtitle}</div>
+                        <div className="font-semibold text-text-primary text-sm md:text-base leading-snug">{event.title}</div>
+                        {event.subtitle && event.type !== 'achievement' && (
+                          <div className="text-brand text-[13px] md:text-sm">{event.subtitle}</div>
+                        )}
                         {event.location && (
-                          <div className="text-xs text-text-muted flex items-center gap-1">
-                            <Icon name="location" size={14} /> {event.location}
+                          <div className="text-xs text-text-muted flex items-center gap-1 leading-none">
+                            <Icon name="location" size={12} /> {event.location}
                           </div>
                         )}
                         {event.description && (
-                          <p className="text-xs text-text-muted leading-relaxed mt-1">
+                          <p className="text-xs md:text-sm text-text-muted leading-relaxed mt-1">
                             {!isExpanded && event.description.length > 120
                               ? `${event.description.substring(0, 120)}...`
                               : event.description}

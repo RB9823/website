@@ -5,7 +5,7 @@ interface LoadingScreenProps {
   minDurationMs?: number;
 }
 
-export function LoadingScreen({ show, minDurationMs = 500 }: LoadingScreenProps) {
+export function LoadingScreen({ show, minDurationMs = 0 }: LoadingScreenProps) {
   const [visible, setVisible] = useState(show);
 
   useEffect(() => {
@@ -24,7 +24,6 @@ export function LoadingScreen({ show, minDurationMs = 500 }: LoadingScreenProps)
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-bg">
-      {/* Simple brand spinner with soft glow */}
       <div className="flex flex-col items-center gap-6">
         <div className="relative">
           <div className="w-16 h-16 rounded-full border-4 border-brand/60 border-t-transparent animate-spin" />

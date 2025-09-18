@@ -25,7 +25,7 @@ export function ExperienceTile({ isExpanded: _isExpanded }: ExperienceTileProps)
             // Compact view - show first 2 experiences
             <motion.div
               key="compact"
-              initial={{ opacity: 0, y: 10 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
@@ -35,19 +35,19 @@ export function ExperienceTile({ isExpanded: _isExpanded }: ExperienceTileProps)
                 <motion.div
                   key={`${item.company}-${item.role}`}
                   custom={index}
-                  initial="hidden"
+                  initial={false}
                   animate="show"
                   variants={MOTION.listItem}
                   whileHover={MOTION.cardHover}
-                  className="group p-1 md:p-2 flex flex-col gap-2"
+                  className="group relative flex flex-col gap-2 rounded-lg border border-transparent bg-white/0 p-3 md:p-4 transition-colors duration-200 hover:border-white/15 hover:bg-white/5 backdrop-brightness-[1.05]"
                 >
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h3 className="font-semibold text-text-primary text-sm md:text-base leading-snug">{item.role}</h3>
                   <p className="text-brand text-xs md:text-sm font-medium">{item.company}</p>
                 </div>
-                <div className="text-xs text-text-muted whitespace-nowrap flex items-center gap-1">
-                  <Icon name="calendar" size={14} /> {item.start} – {item.end}
+                <div className="text-xs text-text-muted whitespace-nowrap flex items-center gap-1 leading-none">
+                  <Icon name="calendar" size={12} /> {item.start} – {item.end}
                 </div>
               </div>
 
@@ -78,7 +78,7 @@ export function ExperienceTile({ isExpanded: _isExpanded }: ExperienceTileProps)
             // Expanded view - show all experiences
             <motion.div
               key="expanded"
-              initial={{ opacity: 0, y: 10 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
@@ -88,21 +88,21 @@ export function ExperienceTile({ isExpanded: _isExpanded }: ExperienceTileProps)
                 <motion.div
                   key={`${item.company}-${item.role}`}
                   custom={index}
-                  initial="hidden"
+                  initial={false}
                   animate="show"
                   variants={MOTION.listItem}
                   whileHover={MOTION.cardHover}
-                  className="group p-1 md:p-2 flex flex-col gap-2"
+                  className="group relative flex flex-col gap-2 rounded-lg border border-transparent bg-white/0 p-3 md:p-4 transition-colors duration-200 hover:border-white/15 hover:bg-white/5 backdrop-brightness-[1.05]"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <h3 className="font-semibold text-text-primary text-sm md:text-base leading-snug">{item.role}</h3>
                       <p className="text-brand text-xs md:text-sm font-medium">{item.company}</p>
                     </div>
-                    <div className="text-xs text-text-muted whitespace-nowrap flex items-center gap-1">
-                      <Icon name="calendar" size={14} /> {item.start} – {item.end}
+                    <div className="text-xs text-text-muted whitespace-nowrap flex items-center gap-1 leading-none">
+                      <Icon name="calendar" size={12} /> {item.start} – {item.end}
                     </div>
-                  </div>
+                </div>
 
                   {item.bullets?.length > 0 && (
                     <ul className="text-sm text-text-muted space-y-1.5 leading-relaxed list-none m-0">
@@ -135,11 +135,18 @@ export function ExperienceTile({ isExpanded: _isExpanded }: ExperienceTileProps)
             <motion.button
               onClick={() => setShowAll(!showAll)}
               className="inline-flex items-center gap-2 text-brand hover:text-brand/80 transition-colors text-sm font-medium focus-visible:ring-2 focus-visible:ring-brand outline-none rounded"
-              whileHover={{ x: 5, ...MOTION.mobileHover }}
+              whileHover={{ y: 2, ...MOTION.mobileHover }}
               whileTap={MOTION.tap}
+              aria-expanded={showAll}
             >
               {showAll ? 'Show Less' : 'See All Experiences'}
-              <Icon name={showAll ? "arrowLeft" : "arrowRight"} size={14} />
+              <motion.span 
+                animate={{ rotate: showAll ? 180 : 0 }}
+                transition={{ duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
+                className="inline-flex"
+              >
+                <Icon name={"arrowDown"} size={14} />
+              </motion.span>
             </motion.button>
           </div>
         )}

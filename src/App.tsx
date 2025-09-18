@@ -134,7 +134,7 @@ export default function App() {
         </>
       )}
 
-      <LoadingScreen show={!ready} />
+      <LoadingScreen show={!ready} minDurationMs={250} />
     </div>
   );
 }

@@ -8,8 +8,11 @@ type IconName =
   | 'clipboard'
   | 'education'
   | 'trophy'
+  | 'check'
   | 'arrowRight'
-  | 'arrowLeft';
+  | 'arrowLeft'
+  | 'arrowDown'
+  | 'arrowUp';
 
 interface IconProps {
   name: IconName;
@@ -19,12 +22,14 @@ interface IconProps {
 
 export function Icon({ name, size = 16, className = '' }: IconProps) {
   const common = {
-    width: size,
-    height: size,
+    // Use style to ensure consistent CSS sizing in flex/inline contexts
+    style: { width: `${size}px`, height: `${size}px` },
     viewBox: '0 0 24 24',
     fill: 'currentColor',
     xmlns: 'http://www.w3.org/2000/svg',
-    className,
+    preserveAspectRatio: 'xMidYMid meet',
+    // Block-level, non-shrinking to avoid width variance across contexts
+    className: `block flex-none ${className}`,
   } as const;
 
   switch (name) {
@@ -82,6 +87,12 @@ export function Icon({ name, size = 16, className = '' }: IconProps) {
           <path d="M18 4h3v2a4 4 0 0 1-4 4h-.3A6 6 0 0 1 13 13.9V17h3v2H8v-2h3v-3.1A6 6 0 0 1 7.3 10H7a4 4 0 0 1-4-4V4h3V2h12v2Zm0 2V4H6v2a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2Z"/>
         </svg>
       );
+    case 'check':
+      return (
+        <svg {...common}>
+          <path d="m10 16.2-3.3-3.3-1.4 1.4L10 19l9-9-1.4-1.4L10 16.2Z" />
+        </svg>
+      );
     case 'arrowRight':
       return (
         <svg {...common}>
@@ -92,6 +103,18 @@ export function Icon({ name, size = 16, className = '' }: IconProps) {
       return (
         <svg {...common}>
           <path d="M11 19l-7-7 7-7 1.4 1.4L7.8 11H20v2H7.8l4.6 4.6L11 19Z"/>
+        </svg>
+      );
+    case 'arrowDown':
+      return (
+        <svg {...common}>
+          <path d="M5 11l7 7 7-7-1.4-1.4L13 15.2V4h-2v11.2L6.4 9.6 5 11Z"/>
+        </svg>
+      );
+    case 'arrowUp':
+      return (
+        <svg {...common}>
+          <path d="M19 13l-7-7-7 7 1.4 1.4L11 8.8V20h2V8.8l4.6 5.6L19 13Z"/>
         </svg>
       );
     default:
